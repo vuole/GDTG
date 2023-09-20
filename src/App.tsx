@@ -4,6 +4,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AgreementPage from './pages/AgreementPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               </ProtectedRoute>
             }
           /> */}
+          <Route path="agreement" element={<AgreementPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Route>
