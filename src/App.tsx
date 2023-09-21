@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AgreementPage from './pages/AgreementPage';
+import TransactionHistoryPage from './pages/TransactionHistoryPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             }
           /> */}
           <Route path="agreement" element={<AgreementPage />} />
+          <Route path="transaction-history" element={<TransactionHistoryPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Route>
