@@ -1,10 +1,10 @@
-import Button from "@mui/material/Button";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
+import SButton from "../Button/Button";
 
 const Container = styled.div`
-  height: 70%;
+  height: 60%;
   display: flex;
   flex-direction: column;
 `;
@@ -21,7 +21,7 @@ const AgrActionTop = styled.div`
   height: 60%;
   display: flex;
 `;
-const Center = styled.div`
+export const Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,20 +52,10 @@ const AgreementContent = () => {
       <AgrAction>
         <AgrActionTop>
           <Center style={{ flex: 1 }}>
-            <Button
-              variant="contained"
-              style={{ width: "200px", textTransform: "unset" }}
-            >
-              Bên A Xác Nhận Đồng Ý
-            </Button>
+            <SButton style={{ width: "200px" }}>Bên A Xác Nhận Đồng Ý</SButton>
           </Center>
           <Center style={{ flex: 1 }}>
-            <Button
-              variant="contained"
-              style={{ width: "200px", textTransform: "unset" }}
-            >
-              Bên B Xác Nhận Đồng Ý
-            </Button>
+            <SButton style={{ width: "200px" }}>Bên B Xác Nhận Đồng Ý</SButton>
           </Center>
         </AgrActionTop>
         <AgrActionBottom>

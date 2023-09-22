@@ -1,8 +1,8 @@
 import "react-quill/dist/quill.snow.css";
 import AgreementMembers from "../components/Agreement/AgreementMembers";
 import AgreementContent from "../components/Agreement/AgreementContent";
-import AgreementChat from "../components/Agreement/AgreementChat";
 import styled from "styled-components";
+import AgreementChat from "../components/Agreement/AgreementChat/AgreementChat";
 
 const Container = styled.div`
   width: 100%;
