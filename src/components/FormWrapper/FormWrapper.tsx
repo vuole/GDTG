@@ -29,7 +29,7 @@ const Nav = styled.p`
 
 interface FormWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
-  navigate: string | React.ReactNode;
+  navigate?: string | React.ReactNode;
 }
 
 const FormWrapper = ({ children, ...props }: FormWrapperProps) => {
@@ -37,7 +37,7 @@ const FormWrapper = ({ children, ...props }: FormWrapperProps) => {
     <StyledFormWrapper>
       <Title>{props.title}</Title>
       <Form>{children}</Form>
-      <Nav>{props.navigate}</Nav>
+      {props.navigate && <Nav>{props.navigate}</Nav>}
     </StyledFormWrapper>
   );
 };
