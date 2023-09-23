@@ -52,10 +52,10 @@ const AgreementContent = () => {
       <AgrAction>
         <AgrActionTop>
           <Center style={{ flex: 1 }}>
-            <SButton style={{ width: "200px" }}>Bên A Xác Nhận Đồng Ý</SButton>
+            <SButton>Bên A Xác Nhận Đồng Ý</SButton>
           </Center>
           <Center style={{ flex: 1 }}>
-            <SButton style={{ width: "200px" }}>Bên B Xác Nhận Đồng Ý</SButton>
+            <SButton>Bên B Xác Nhận Đồng Ý</SButton>
           </Center>
         </AgrActionTop>
         <AgrActionBottom>

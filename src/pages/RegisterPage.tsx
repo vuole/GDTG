@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import FormWrapper from "../components/FormWrapper/FormWrapper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import UserService from "../services/UserService";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const FormContainer = styled.div`
   background-color: #0095c5;
@@ -19,9 +21,24 @@ const RegisterPage = () => {
   const [phone, setPhone] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<any>(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
-    console.log(phone);
+    setIsLoading(true);
+    try {
+      UserService.register({ name, email, phone, password }).then((res) => {
+        navigate("/login");
+      });
+    } catch (err) {
+      setIsError(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <FormContainer>

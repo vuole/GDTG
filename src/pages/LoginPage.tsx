@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import FormWrapper from "../components/FormWrapper/FormWrapper";
 import { FormContainer } from "./RegisterPage";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
+import axios from "axios";
+import qs from "qs";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,6 +16,20 @@ const LoginPage = () => {
     console.log(email);
     console.log(password);
   };
+
+  useEffect(() => {
+    axios
+      .post(
+        "https://trunggiangiaodich.vn:8443/api/users/auth",
+        qs.stringify({ email: "abc@gmail.com", password: "123456" }),
+        { headers: { "content-type": "application/x-www-form-urlencoded" } }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <FormContainer>
       <FormWrapper
