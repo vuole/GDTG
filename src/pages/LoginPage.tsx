@@ -1,62 +1,86 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../components/FormWrapper/FormWrapper";
 import { FormContainer } from "./RegisterPage";
-import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
+import { useContext, useMemo, useState } from "react";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
-import axios from "axios";
-import qs from "qs";
+import SButton from "../components/Button/SButton";
+import STextField from "../components/TextField/STextField";
+import Alert from "@mui/material/Alert";
+import UserService from "../services/UserService";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const { auth, dispatch } = useContext(AuthContext);
+
+  const isErrorForm = useMemo(() => {
+    return email === "" || password === "";
+  }, [email, password]);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  if (auth.currentUser) return <Navigate to="/" />;
+
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
+    setIsLoading(true);
+    try {
+      await UserService.login({ email, password }).then((res) => {
+        dispatch({ type: "LOGGED", payload: res });
+        navigate("/");
+      });
+    } catch (err) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  useEffect(() => {
-    axios
-      .post(
-        "https://trunggiangiaodich.vn:8443/api/users/auth",
-        qs.stringify({ email: "abc@gmail.com", password: "123456" }),
-        { headers: { "content-type": "application/x-www-form-urlencoded" } }
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
-    <FormContainer>
+    <FormContainer
+      style={{ background: "linear-gradient(90deg, #0095C5 0%, #0DB966 100%)" }}
+    >
       <FormWrapper
-        title="Login"
+        title="Đăng nhập"
         navigate={
           <>
-            You don't have an account? <Link to="/register">Register</Link>
+            Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
           </>
         }
       >
-        <TextField
+        {location?.state?.status === "success-register" && (
+          <Alert severity="success">
+            Đăng ký tài khoản thành công. Đăng nhập ngay!
+          </Alert>
+        )}
+        {isError && (
+          <Alert severity="error">Email hoặc mật khẩu không chính xác</Alert>
+        )}
+        <STextField
           label="Email"
           variant="outlined"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          isEmty={email === ""}
         />
         <PasswordTextField
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          isEmty={password === ""}
         />
-        <Button
+        <SButton
           type="submit"
-          variant="contained"
           onClick={(e) => handleSubmit(e)}
+          disabled={isErrorForm}
         >
-          Login
-        </Button>
+          Đăng Nhập
+        </SButton>
       </FormWrapper>
     </FormContainer>
   );

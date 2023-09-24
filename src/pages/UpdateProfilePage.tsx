@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import SButton from "../components/Button/Button";
+import SButton from "../components/Button/SButton";
 import styled from "styled-components";
 import FormWrapper from "../components/FormWrapper/FormWrapper";
 import FormControl from "@mui/material/FormControl";

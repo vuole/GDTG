@@ -92,8 +92,8 @@ export default function TransactionHistory() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.name}>
+            {rows.map((row, i) => (
+              <StyledTableRow key={i}>
                 <StyledTableCell component="th" scope="row">
                   {row.date}
                 </StyledTableCell>

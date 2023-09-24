@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField";
 import styled from "styled-components";
-import SButton from "../../Button/Button";
+import SButton from "../../Button/SButton";
 
 const Container = styled.div`
   padding: 0 10px 0 0;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
-import SButton from "../Button/Button";
+import SButton from "../Button/SButton";
 
 const Container = styled.div`
   height: 60%;

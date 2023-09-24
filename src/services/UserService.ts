@@ -16,4 +16,16 @@ export default {
       throw error;
     }
   },
+  login: async (data: User) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/users/auth`,
+        qs.stringify(data),
+        HEADERS
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

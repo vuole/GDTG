@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import FormWrapper from "../components/FormWrapper/FormWrapper";
 import { Link, useNavigate } from "react-router-dom";
-import TextField from "@mui/material/TextField";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
-import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import UserService from "../services/UserService";
+import SButton from "../components/Button/SButton";
+import STextField from "../components/TextField/STextField";
 import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
 export const FormContainer = styled.div`
-  background-color: #0095c5;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -22,7 +22,12 @@ const RegisterPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<any>(null);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const isErrorForm = useMemo(() => {
+    return name === "" || phone === "" || email === "" || password === "";
+  }, [name, phone, email, password]);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (
@@ -31,54 +36,67 @@ const RegisterPage = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      UserService.register({ name, email, phone, password }).then((res) => {
-        navigate("/login");
-      });
+      await UserService.register({ name, email, phone, password }).then(
+        (res) => {
+          navigate("/login", { state: { status: "success-register" } });
+        }
+      );
     } catch (err) {
-      setIsError(err);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
-    <FormContainer>
+    <FormContainer
+      style={{ background: "linear-gradient(90deg, #0095C5 0%, #0DB966 100%)" }}
+    >
       <FormWrapper
-        title="Register"
+        title="Đăng ký"
         navigate={
           <>
-            You do have an account? <Link to="/login">Login</Link>
+            Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
           </>
         }
       >
-        <TextField
-          label="Name"
-          variant="outlined"
+        {isError && <Alert severity="error">Đăng ký không thành công</Alert>}
+        <STextField
+          label="Họ và tên"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          isEmty={name === ""}
         />
-        <TextField
-          label="Phone"
-          variant="outlined"
+        <STextField
+          label="Số điện thoại"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
+          isEmty={phone === ""}
         />
-        <TextField
+        <STextField
           label="Email"
-          variant="outlined"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          isEmty={email === ""}
         />
         <PasswordTextField
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          isEmty={password === ""}
         />
-        <Button
+        <SButton
           type="submit"
-          variant="contained"
           onClick={(e) => handleSubmit(e)}
+          disabled={isErrorForm || isLoading}
         >
-          Register
-        </Button>
+          <p>Đăng Ký</p>
+          {isLoading && (
+            <CircularProgress
+              sx={{ color: "white", marginLeft: "5px" }}
+              size={25}
+            />
+          )}
+        </SButton>
       </FormWrapper>
     </FormContainer>
   );

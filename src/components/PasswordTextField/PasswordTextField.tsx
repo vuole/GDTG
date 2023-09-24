@@ -5,8 +5,22 @@ import OutlinedInput, { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import styled from "styled-components";
 
-const PasswordTextField = (props: OutlinedInputProps) => {
+const HelperText = styled.small`
+  font-size: 12px;
+  color: #d32f2f;
+  margin-top: 3px;
+  margin-left: 14px;
+  letter-spacing: 0.03333em;
+`;
+
+type SOutlinedInputProps = OutlinedInputProps & {
+  isEmty?: boolean;
+};
+
+const PasswordTextField = (props: SOutlinedInputProps) => {
+  const [isOnBlur, setIsOnBlur] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -18,15 +32,18 @@ const PasswordTextField = (props: OutlinedInputProps) => {
   };
   return (
     <FormControl variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+      <InputLabel
+        htmlFor="outlined-adornment-password"
+        error={isOnBlur && props.isEmty ? true : false}
+      >
+        Mật khẩu
+      </InputLabel>
       <OutlinedInput
         {...props}
-        id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
-              aria-label="toggle password visibility"
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
               edge="end"
@@ -35,8 +52,13 @@ const PasswordTextField = (props: OutlinedInputProps) => {
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
+        label="Mật khẩu"
+        error={isOnBlur && props.isEmty ? true : false}
+        onBlur={(e) => setIsOnBlur(true)}
       />
+      {isOnBlur && props.isEmty && (
+        <HelperText>Trường này là bắt buộc.</HelperText>
+      )}
     </FormControl>
   );
 };
