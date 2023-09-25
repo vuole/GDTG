@@ -10,12 +10,11 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import { AuthContext } from "./contexts/AuthContext";
 
 function App() {
-  const { auth } = useContext(AuthContext);
+  // const { auth } = useContext(AuthContext);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}")
 
-  const ProtectedRoute = ({ children }: any) => {
-    console.log(auth);
-    
-    if (!auth.currentUser) {
+  const ProtectedRoute = ({ children }: any) => {    
+    if (!currentUser) {
       return <Navigate to="/login" />;
     }
     return children;

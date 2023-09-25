@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }: any) => {
 };
 
 const authReducer = (state: Auth, action: any) => {
+  console.log("vao day");
+  
   
   switch (action.type) {
     case "LOGGED":

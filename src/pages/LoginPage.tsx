@@ -15,6 +15,10 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const { auth, dispatch } = useContext(AuthContext);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}")
+  
+  console.log(auth.currentUser);
+  
 
   const isErrorForm = useMemo(() => {
     return email === "" || password === "";
@@ -23,7 +27,7 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (auth.currentUser) return <Navigate to="/" />;
+  if (currentUser !== null || Object.keys(currentUser).length > 0) return <Navigate to="/" />;
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -32,7 +36,7 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       await UserService.login({ email, password }).then((res) => {
-        dispatch({ type: "LOGGED", payload: res });
+        localStorage.setItem("currentUser", JSON.stringify(res));
         navigate("/");
       });
     } catch (err) {
