@@ -3,6 +3,8 @@ import { User } from "../types/type";
 import { BASE_URL, HEADERS } from "./config";
 import qs from "qs";
 
+// axios.defaults.withCredentials = true
+
 export default {
   register: async (data: User) => {
     try {
@@ -23,6 +25,16 @@ export default {
         qs.stringify(data),
         HEADERS
       );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getProfile: async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/users/profile`, {
+        withCredentials: true
+      });
       return res.data;
     } catch (error) {
       throw error;

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import logo from "./logo.svg";
+import React from "react";
 import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
@@ -7,14 +6,13 @@ import RegisterPage from "./pages/RegisterPage";
 import AgreementPage from "./pages/AgreementPage";
 import TransactionHistoryPage from "./pages/TransactionHistoryPage";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
-import { AuthContext } from "./contexts/AuthContext";
+import axios from "axios";
 
 function App() {
-  // const { auth } = useContext(AuthContext);
-  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}")
 
-  const ProtectedRoute = ({ children }: any) => {    
-    if (!currentUser) {
+  const ProtectedRoute = ({ children }: any) => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (Object.keys(currentUser).length <= 0) {
       return <Navigate to="/login" />;
     }
     return children;

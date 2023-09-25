@@ -1,24 +1,18 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import FormWrapper from "../components/FormWrapper/FormWrapper";
 import { FormContainer } from "./RegisterPage";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
 import SButton from "../components/Button/SButton";
 import STextField from "../components/TextField/STextField";
 import Alert from "@mui/material/Alert";
 import UserService from "../services/UserService";
-import { AuthContext } from "../contexts/AuthContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const { auth, dispatch } = useContext(AuthContext);
-  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}")
-  
-  console.log(auth.currentUser);
-  
 
   const isErrorForm = useMemo(() => {
     return email === "" || password === "";
@@ -27,7 +21,12 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (currentUser !== null || Object.keys(currentUser).length > 0) return <Navigate to="/" />;
+  if (
+    Object.keys(JSON.parse(localStorage.getItem("currentUser") || "{}"))
+      .length > 0
+  ) {
+    return <Navigate to="/" />;
+  }
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -36,6 +35,8 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       await UserService.login({ email, password }).then((res) => {
+
+        
         localStorage.setItem("currentUser", JSON.stringify(res));
         navigate("/");
       });

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 import { User } from "../types/type";
 
 export const AuthContext = createContext<UserContextType>(
@@ -15,12 +15,8 @@ export const AuthProvider = ({ children }: any) => {
 };
 
 const authReducer = (state: Auth, action: any) => {
-  console.log("vao day");
-  
-  
   switch (action.type) {
     case "LOGGED":
-      console.log(action.payload);
       return {
         currentUser: action.payload,
       };
@@ -30,11 +26,11 @@ const authReducer = (state: Auth, action: any) => {
 };
 
 const INITIAL_STATE: Auth = {
-  currentUser: null,
+  currentUser: {},
 };
 
 interface Auth {
-  currentUser: User | null;
+  currentUser: User;
 }
 
 interface UserContextType {

@@ -1,16 +1,18 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import THTopBar from "../components/TransactionHistory/THTopBar";
 import TransactionHistory from "../components/TransactionHistory/TransactionHistory";
-import { AuthContext } from "../contexts/AuthContext";
+import UserService from "../services/UserService";
 
 const TransactionHistoryPage = () => {
-  const { auth, dispatch } = useContext(AuthContext);
-
+  
   useEffect(() => {
-    dispatch({
-      type: "LOGGED",
-      payload: JSON.parse(localStorage.getItem("currentUser") || "{}"),
-    });
+    UserService.getProfile()
+      .then((res) => {
+        console.log("profile", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
