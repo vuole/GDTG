@@ -10,7 +10,7 @@ const StyledFormWrapper = styled.div`
   align-items: center;
   min-width: 430px;
 `;
-const Logo = styled.span`
+export const Logo = styled.span`
   color: #5d5b8d;
   font-weight: bold;
   font-size: 24px;

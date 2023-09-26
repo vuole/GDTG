@@ -12,6 +12,10 @@ import Button from "@mui/material/Button";
 import TablePagination from "@mui/material/TablePagination";
 import TextField from "@mui/material/TextField";
 import CreateTransaction from "./CreateTransaction";
+import { useEffect, useState } from "react";
+import { Transaction } from "../../types/type";
+import UserService from "../../services/UserService";
+import Moment from "react-moment";
 
 const StyledTableCell = styledMUI(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,28 +50,15 @@ const ActionContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-`
-
-function createData(
-  date: string,
-  name: string,
-  amount: number,
-  status: string
-) {
-  return { date, name, amount, status };
-}
-
-const rows = [
-  createData("21/9/2023", "Commercial Website", 1000000, "Completed"),
-  createData("21/9/2023", "Commercial Website", 1000000, "Completed"),
-  createData("21/9/2023", "Commercial Website", 1000000, "Completed"),
-  createData("21/9/2023", "Commercial Website", 1000000, "Completed"),
-  createData("21/9/2023", "Commercial Website", 1000000, "Completed"),
-];
+`;
 
 export default function TransactionHistory() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [transactionList, setTransactionList] = useState<Array<Transaction>>(
+    []
+  );
+  const [refresh, setRefresh] = useState(false);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -80,6 +71,13 @@ export default function TransactionHistory() {
     setPage(0);
   };
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    UserService.getTransactionList(currentUser.jwt).then((res) => {
+      setTransactionList(res);
+    });
+  }, [refresh]);
+
   return (
     <Container>
       <Title>Lịch Sử Giao Dịch</Title>
@@ -87,10 +85,10 @@ export default function TransactionHistory() {
         <TextField
           variant="outlined"
           size="small"
-          sx={{ width: "40%"}}
+          sx={{ width: "40%" }}
           placeholder="Tìm kiếm..."
         />
-        <CreateTransaction />
+        <CreateTransaction refresh={refresh} setRefresh={setRefresh} />
       </ActionContainer>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -106,14 +104,22 @@ export default function TransactionHistory() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, i) => (
-              <StyledTableRow key={i}>
+            {transactionList.map((transaction) => (
+              <StyledTableRow key={transaction._id}>
                 <StyledTableCell component="th" scope="row">
-                  {row.date}
+                  <Moment format="YYYY-MM-DD HH:mm">
+                    {transaction.createdAt}
+                  </Moment>
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.name}</StyledTableCell>
-                <StyledTableCell align="right">{row.amount}</StyledTableCell>
-                <StyledTableCell align="right">{row.status}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {transaction.name}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {transaction.amount}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {transaction.transactionState}
+                </StyledTableCell>
                 <StyledTableCell align="right">
                   <Button
                     variant="contained"
@@ -131,11 +137,12 @@ export default function TransactionHistory() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={transactionList.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Số hàng trên trang:"
       />
     </Container>
   );

@@ -75,7 +75,7 @@ export default function THTopBar() {
               <MenuItem
                 onClick={(e) => {
                   handleClose();
-                  navigate("/update-profile");
+                  navigate("/profile");
                 }}
               >
                 Thông tin tài khoản

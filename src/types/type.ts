@@ -9,3 +9,12 @@ export interface User {
   companyName?: string;
   position?: string;
 }
+
+export interface Transaction {
+  _id?: string;
+  name?: string;
+  amount?: string;
+  transactionState?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

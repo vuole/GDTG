@@ -64,4 +64,41 @@ export default {
       throw error;
     }
   },
+  findUser: async (keyword: string) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/users/find`, {
+        params: { keyword: keyword },
+      });
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  createTransaction: async (
+    data: { name: string; adminB: string },
+    token: string
+  ) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/transactions/create`,
+        qs.stringify(data),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getTransactionList: async (token: string) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/transactions/list`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 };
