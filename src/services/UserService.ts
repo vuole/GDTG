@@ -30,10 +30,34 @@ export default {
       throw error;
     }
   },
-  getProfile: async () => {
+  getProfile: async (token: string) => {
     try {
       const res = await axios.get(`${BASE_URL}/users/profile`, {
-        withCredentials: true
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateProfile: async (data: User, token: string) => {
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/users/profile`,
+        qs.stringify(data),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  logout: async (token: string) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/users/logout`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       return res.data;
     } catch (error) {

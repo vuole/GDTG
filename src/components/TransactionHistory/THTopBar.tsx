@@ -10,9 +10,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import { useNavigate } from "react-router-dom";
+import UserService from "../../services/UserService";
 
 export default function THTopBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +24,14 @@ export default function THTopBar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logout = async () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    await UserService.logout(currentUser.jwt).then((res) => {
+      localStorage.removeItem("currentUser");
+      navigate("/login");
+    });
   };
 
   return (
@@ -60,8 +72,22 @@ export default function THTopBar() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Thông tin tài khoản</MenuItem>
-              <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  handleClose();
+                  navigate("/update-profile");
+                }}
+              >
+                Thông tin tài khoản
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  handleClose();
+                  logout();
+                }}
+              >
+                Đăng xuất
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>
