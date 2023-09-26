@@ -9,6 +9,7 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import axios from "axios";
 
 function App() {
+  axios.defaults.withCredentials = true
 
   const ProtectedRoute = ({ children }: any) => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");

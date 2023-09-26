@@ -11,6 +11,7 @@ import styled from "styled-components";
 import Button from "@mui/material/Button";
 import TablePagination from "@mui/material/TablePagination";
 import TextField from "@mui/material/TextField";
+import CreateTransaction from "./CreateTransaction";
 
 const StyledTableCell = styledMUI(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,10 +33,20 @@ const StyledTableRow = styledMUI(TableRow)(({ theme }) => ({
   },
 }));
 
+const Container = styled.div`
+  padding: 10px;
+`;
+
 const Title = styled.div`
   font-size: 20px;
-  margin: 20px 10px 10px 10px;
+  margin: 20px 0 10px 0;
 `;
+
+const ActionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`
 
 function createData(
   date: string,
@@ -70,14 +81,17 @@ export default function TransactionHistory() {
   };
 
   return (
-    <>
-      <Title>Lịch sử giao dịch</Title>
-      <TextField
-        variant="outlined"
-        size="small"
-        sx={{ width: "20%", margin: "0 0 5px 5px" }}
-        placeholder="Tìm kiếm..."
-      />
+    <Container>
+      <Title>Lịch Sử Giao Dịch</Title>
+      <ActionContainer>
+        <TextField
+          variant="outlined"
+          size="small"
+          sx={{ width: "40%"}}
+          placeholder="Tìm kiếm..."
+        />
+        <CreateTransaction />
+      </ActionContainer>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -123,6 +137,6 @@ export default function TransactionHistory() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </>
+    </Container>
   );
 }

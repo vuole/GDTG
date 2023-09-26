@@ -33,8 +33,8 @@ export default function THTopBar() {
             Logo
           </Typography>
           <div>
-            <IconButton color="inherit" sx={{marginRight: "-10px"}}>
-              <div style={{fontSize: "14px"}}>0 VNĐ</div>
+            <IconButton color="inherit" sx={{ marginRight: "-10px" }}>
+              <div style={{ fontSize: "14px" }}>0 VNĐ</div>
             </IconButton>
             <IconButton size="large" color="inherit">
               <AccountBalanceWalletIcon />

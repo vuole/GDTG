@@ -65,7 +65,7 @@ const LoginPage = () => {
           </Alert>
         )}
         {isError && (
-          <Alert severity="error">Email hoặc mật khẩu không chính xác</Alert>
+          <Alert severity="error">Đăng nhập thất bại</Alert>
         )}
         <STextField
           label="Email"

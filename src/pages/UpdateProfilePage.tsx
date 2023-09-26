@@ -47,6 +47,14 @@ const UpdateProfilePage = () => {
           </Select>
         </FormControl>
         <Action>
+        <SButton
+            color="error"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            Hủy
+          </SButton>
           <SButton
             type="submit"
             onClick={(e) => {
@@ -54,14 +62,6 @@ const UpdateProfilePage = () => {
             }}
           >
             Lưu
-          </SButton>
-          <SButton
-            color="error"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            Hủy
           </SButton>
         </Action>
       </FormWrapper>
