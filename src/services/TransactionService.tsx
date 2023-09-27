@@ -53,4 +53,22 @@ export default {
       throw error;
     }
   },
+  updateContractContent: async (
+    transactionId: string,
+    contractContent: string,
+    token: string
+  ) => {
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/transactions/contractcontent/${transactionId}`,
+        qs.stringify({contractContent}),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

@@ -14,7 +14,15 @@ const Container = styled.div`
   border: 1px solid #ccc;
   padding: 5px;
 `;
-const MemberSearching = styled.div``;
+const MemberSearching = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+const Title = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+`;
 const MemberShow = styled.div`
   margin-top: 10px;
   ol {
@@ -35,6 +43,7 @@ const AgreementMembers = (props: AgreementMembersProps) => {
   const [keyWord, setKeyWord] = useState<string>("");
   const [searchResult, setSearchResult] = useState<Array<User>>([]);
   const [error, setError] = useState<any>(null);
+  const [addMemberIsDone, setAddMemberIsDone] = useState(false);
 
   const searchQuery = useDebounce(keyWord, 1000);
 
@@ -60,12 +69,14 @@ const AgreementMembers = (props: AgreementMembersProps) => {
         { memberID: value._id },
         currentUser.jwt
       ).then((res) => {
+        setAddMemberIsDone(true);
         props.setRefresh(!props.refresh);
       });
     } catch (error: any) {
       setError(error.response);
     } finally {
       setTimeout(() => {
+        setAddMemberIsDone(false);
         setError(null);
       }, 3000);
     }
@@ -82,9 +93,18 @@ const AgreementMembers = (props: AgreementMembersProps) => {
   return (
     <Container>
       <MemberSearching>
-        <p>Tìm kiếm thành viên:</p>
-        {error?.data?.message && (
-          <Alert severity="error">Bạn không có quyền trong nhóm này</Alert>
+        <Title>Tìm kiếm thành viên:</Title>
+        {error?.data?.message === "You are not admin of A group" && (
+          <Alert severity="error">Bạn không phải Admin bên A</Alert>
+        )}
+        {error?.data?.message === "You are not admin of B group" && (
+          <Alert severity="error">Bạn không phải Admin bên B</Alert>
+        )}
+        {error?.data?.message === "This member already added" && (
+          <Alert severity="error">Thành viên này đã được thêm</Alert>
+        )}
+        {addMemberIsDone && (
+          <Alert severity="success">Thêm thành công</Alert>
         )}
         <STextField
           placeholder="Email hoặc số điện thoại"
@@ -96,15 +116,12 @@ const AgreementMembers = (props: AgreementMembersProps) => {
         <SearchResultList
           data={searchResult}
           onSlectedItem={handleSelectedItem}
+          fullSubInfo
         />
       </MemberSearching>
       <MemberShow>
-        <p>{props.title}</p>
-        <ol>
-          {props.members.map((member) => {
-            return <li key={member._id}>{member.name}</li>;
-          })}
-        </ol>
+        <Title>{props.title}</Title>
+        <SearchResultList data={props.members} fullHeight highlightFirstItem />
       </MemberShow>
     </Container>
   );

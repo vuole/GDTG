@@ -71,7 +71,7 @@ export default function CreateTransaction(props: CreateTransactionProps) {
         <STextField
           label="Tên giao dịch"
           fullWidth
-          sx={{ marginTop: "5px" }}
+          sx={{ marginTop: "6px" }}
           value={name}
           onChange={(e) => setName(e.target.value)}
           isEmty={!name}
@@ -98,6 +98,7 @@ export default function CreateTransaction(props: CreateTransactionProps) {
         <SearchResultList
           data={searchResult}
           onSlectedItem={handleSelectedItem}
+          fullSubInfo
         />
       </Wrapper>
     </SFormDialog>

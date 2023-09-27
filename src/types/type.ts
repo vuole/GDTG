@@ -15,11 +15,12 @@ export interface Transaction {
   name?: string;
   amount?: string;
   transactionState?: string;
-  contractState?: string
+  contractState?: string;
   adminA?: User;
   adminB?: User;
   membersA?: Array<User>;
   membersB?: Array<User>;
+  contract?: string;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -8,7 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import styled from "styled-components";
-import Button from "@mui/material/Button";
 import TablePagination from "@mui/material/TablePagination";
 import TextField from "@mui/material/TextField";
 import CreateTransaction from "./CreateTransaction";
@@ -45,7 +44,8 @@ const Container = styled.div`
 
 const Title = styled.div`
   font-size: 20px;
-  margin: 20px 0 10px 0;
+  font-weight: 500;
+  margin: 20px 0 30px 0;
 `;
 
 const ActionContainer = styled.div`
@@ -90,7 +90,7 @@ export default function TransactionHistory() {
           variant="outlined"
           size="small"
           sx={{ width: "40%" }}
-          placeholder="Tìm kiếm..."
+          placeholder="Tìm kiếm giao dịch..."
         />
         <CreateTransaction refresh={refresh} setRefresh={setRefresh} />
       </ActionContainer>

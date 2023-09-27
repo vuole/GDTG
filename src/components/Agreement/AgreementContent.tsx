@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
 import SButton from "../Button/SButton";
+import { useDebounce } from "../../hooks/useDebounce";
+import TransactionService from "../../services/TransactionService";
+import { Transaction } from "../../types/type";
 
 const Container = styled.div`
   height: 60%;
@@ -9,25 +12,20 @@ const Container = styled.div`
   flex-direction: column;
 `;
 const AgrContent = styled.div`
-  height: 80%;
+  height: calc(100% - 115px);
 `;
 const AgrAction = styled.div`
-  flex: 1;
+  height: 115px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 const AgrActionTop = styled.div`
-  height: 60%;
+  height: 63px;
   display: flex;
-`;
-export const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 const AgrActionBottom = styled.div`
-  flex: 1;
+  height: 52px;
   display: flex;
   border: 1px solid #ccc;
   div {
@@ -35,9 +33,35 @@ const AgrActionBottom = styled.div`
     border-right: 1px solid #ccc;
   }
 `;
+export const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-const AgreementContent = () => {
-  const [value, setValue] = useState("");
+interface AgreementContentProps {
+  transaction: Transaction;
+}
+
+const AgreementContent = ({ transaction }: AgreementContentProps) => {
+  const [value, setValue] = useState<string>("<ol><li>abcdefgh</li><li>b</li><li>c</li></ol>");
+
+  useEffect(() => {
+    setValue(transaction.contract || "")
+  }, [transaction]);
+
+  // const valueQuery = useDebounce(value, 3000);
+
+  // useEffect(() => {
+  //   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  //   TransactionService.updateContractContent(
+  //     transaction._id || "65131d75633ac505425d1ff9",
+  //     valueQuery,
+  //     currentUser.jwt
+  //   ).then((res) => {
+  //     console.log(res);
+  //   });
+  // }, [valueQuery, transaction]);
 
   return (
     <Container>

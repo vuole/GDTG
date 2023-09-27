@@ -7,27 +7,36 @@ import List from "@mui/material/List";
 
 interface SearchResultListProps {
   data: Array<any>;
-  onSlectedItem: (value: any) => void;
+  onSlectedItem?: (value: any) => void;
+  fullHeight?: boolean;
+  fullSubInfo?: boolean;
+  highlightFirstItem?: boolean;
 }
 
-const SearchResultList = ({ data, onSlectedItem }: SearchResultListProps) => {
+const SearchResultList = ({
+  data,
+  onSlectedItem,
+  fullHeight,
+  fullSubInfo,
+  highlightFirstItem,
+}: SearchResultListProps) => {
   return (
     <List
       dense
       sx={{
         width: "100%",
         bgcolor: "background.paper",
-        maxHeight: "250px",
+        maxHeight: fullHeight ? "100%" : "250px",
         overflowY: "auto",
       }}
     >
-      {data.map((value) => {
+      {data.map((value, i) => {
         return (
           <ListItem
             key={value._id}
             disablePadding
             onClick={(e) => {
-              onSlectedItem(value);
+              onSlectedItem?.(value);
             }}
           >
             <ListItemButton>
@@ -35,8 +44,16 @@ const SearchResultList = ({ data, onSlectedItem }: SearchResultListProps) => {
                 <Avatar>A</Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={value.name}
-                secondary={`${value.email} (${value.phone})`}
+                primary={
+                  i === 0 && highlightFirstItem
+                    ? `${value.name} (Admin)`
+                    : `${value.name}`
+                }
+                secondary={
+                  fullSubInfo
+                    ? `${value.email} (${value.phone})`
+                    : `${value.phone}`
+                }
               />
             </ListItemButton>
           </ListItem>
