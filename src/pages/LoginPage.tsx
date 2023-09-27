@@ -62,6 +62,11 @@ const LoginPage = () => {
             Đăng ký tài khoản thành công. Đăng nhập ngay!
           </Alert>
         )}
+        {location?.state?.status === "success-password-change" && (
+          <Alert severity="success">
+            Đổi mật khẩu thành công. Đăng nhập lại!
+          </Alert>
+        )}
         {isError && <Alert severity="error">Đăng nhập thất bại</Alert>}
         <STextField
           label="Email"

@@ -35,6 +35,10 @@ const PasswordChangePage = () => {
         currentUser.jwt
       ).then((res) => {
         setData(res);
+        UserService.logout(currentUser.jwt).then((res) => {
+          localStorage.removeItem("currentUser");
+          navigate("/login", { state: { status: "success-password-change" } });
+        });
       });
     } catch (err: any) {
       setError(err.response);

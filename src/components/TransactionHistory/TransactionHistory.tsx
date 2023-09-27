@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import { Transaction } from "../../types/type";
 import UserService from "../../services/UserService";
 import Moment from "react-moment";
+import SButton from "../Button/SButton";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styledMUI(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,6 +61,8 @@ export default function TransactionHistory() {
     []
   );
   const [refresh, setRefresh] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -121,13 +125,16 @@ export default function TransactionHistory() {
                   {transaction.transactionState}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button
-                    variant="contained"
+                  <SButton
                     size="small"
-                    sx={{ textTransform: "unset" }}
+                    onClick={(e) =>
+                      navigate(`/agreement/${transaction._id}`, {
+                        state: { id: transaction._id },
+                      })
+                    }
                   >
                     Chi tiết
-                  </Button>
+                  </SButton>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

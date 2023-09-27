@@ -32,7 +32,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="agreement" element={<AgreementPage />} />
+          <Route path="agreement/:id" element={<AgreementPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="password-change" element={<PasswordChangePage />} />
           <Route path="login" element={<LoginPage />} />

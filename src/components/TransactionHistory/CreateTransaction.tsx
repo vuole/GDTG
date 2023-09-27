@@ -4,15 +4,11 @@ import STextField from "../TextField/STextField";
 import { useEffect, useMemo, useState } from "react";
 import UserService from "../../services/UserService";
 import { useDebounce } from "../../hooks/useDebounce";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import List from "@mui/material/List";
 import { User } from "../../types/type";
 import InputAdornment from "@mui/material/InputAdornment";
 import Chip from "@mui/material/Chip";
+import SearchResultList from "./SearchResultList";
+import Avatar from "@mui/material/Avatar";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,6 +52,11 @@ export default function CreateTransaction(props: CreateTransactionProps) {
     });
   };
 
+  const handleSelectedItem = (value: any) => {
+    setAdminB(value);
+    setKeyword("");
+  };
+
   return (
     <SFormDialog
       actionName="Tạo Giao Dịch"
@@ -86,38 +87,7 @@ export default function CreateTransaction(props: CreateTransactionProps) {
               ) : undefined,
           }}
         />
-        <List
-          dense
-          sx={{
-            width: "100%",
-            bgcolor: "background.paper",
-            maxHeight: "250px",
-            overflowY: "auto",
-          }}
-        >
-          {searchResult.map((value) => {
-            return (
-              <ListItem
-                key={value._id}
-                disablePadding
-                onClick={(e) => {
-                  setAdminB(value);
-                  setKeyword("");
-                }}
-              >
-                <ListItemButton>
-                  <ListItemAvatar>
-                    <Avatar>A</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={value.name}
-                    secondary={`${value.email} (${value.phone})`}
-                  />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
+        <SearchResultList data={searchResult} onSlectedItem={handleSelectedItem} />
       </Wrapper>
     </SFormDialog>
   );
