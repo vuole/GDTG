@@ -31,12 +31,12 @@ const PasswordTextField = (props: SOutlinedInputProps) => {
     event.preventDefault();
   };
   return (
-    <FormControl variant="outlined">
+    <FormControl variant="outlined" fullWidth>
       <InputLabel
         htmlFor="outlined-adornment-password"
         error={isOnBlur && props.isEmty ? true : false}
       >
-        Mật khẩu
+        {props.label}
       </InputLabel>
       <OutlinedInput
         {...props}
@@ -52,7 +52,6 @@ const PasswordTextField = (props: SOutlinedInputProps) => {
             </IconButton>
           </InputAdornment>
         }
-        label="Mật khẩu"
         error={isOnBlur && props.isEmty ? true : false}
         onBlur={(e) => setIsOnBlur(true)}
       />

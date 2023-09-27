@@ -35,8 +35,6 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       await UserService.login({ email, password }).then((res) => {
-
-        
         localStorage.setItem("currentUser", JSON.stringify(res));
         navigate("/");
       });
@@ -64,9 +62,7 @@ const LoginPage = () => {
             Đăng ký tài khoản thành công. Đăng nhập ngay!
           </Alert>
         )}
-        {isError && (
-          <Alert severity="error">Đăng nhập thất bại</Alert>
-        )}
+        {isError && <Alert severity="error">Đăng nhập thất bại</Alert>}
         <STextField
           label="Email"
           variant="outlined"
@@ -75,6 +71,7 @@ const LoginPage = () => {
           isEmty={email === ""}
         />
         <PasswordTextField
+          label="Mật khẩu"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           isEmty={password === ""}

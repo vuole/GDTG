@@ -100,5 +100,22 @@ export default {
     } catch (error) {
       throw error;
     }
-  }
+  },
+  changePassword: async (
+    data: { oldPassword: string; newPassword: string },
+    token: string
+  ) => {
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/users/changepass`,
+        qs.stringify(data),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

@@ -7,9 +7,10 @@ import AgreementPage from "./pages/AgreementPage";
 import TransactionHistoryPage from "./pages/TransactionHistoryPage";
 import ProfilePage from "./pages/ProfilePage";
 import axios from "axios";
+import PasswordChangePage from "./pages/PasswordChangePage";
 
 function App() {
-  axios.defaults.withCredentials = true
+  axios.defaults.withCredentials = true;
 
   const ProtectedRoute = ({ children }: any) => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
@@ -33,6 +34,7 @@ function App() {
           />
           <Route path="agreement" element={<AgreementPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="password-change" element={<PasswordChangePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Route>

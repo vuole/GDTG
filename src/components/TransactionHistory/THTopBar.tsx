@@ -83,6 +83,14 @@ export default function THTopBar() {
               <MenuItem
                 onClick={(e) => {
                   handleClose();
+                  navigate("/password-change");
+                }}
+              >
+                Đổi mật khẩu
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  handleClose();
                   logout();
                 }}
               >

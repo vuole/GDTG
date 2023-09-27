@@ -6,13 +6,13 @@ import UserService from "../services/UserService";
 import Alert from "@mui/material/Alert";
 import UpdateProfile from "../components/Profile/UpdateProfile";
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   justify-content: center;
   padding: 50px;
 `;
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   width: 600px;
   display: flex;
   flex-direction: column;

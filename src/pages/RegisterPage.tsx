@@ -80,6 +80,7 @@ const RegisterPage = () => {
           isEmty={email === ""}
         />
         <PasswordTextField
+          label="Mật khẩu"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           isEmty={password === ""}
