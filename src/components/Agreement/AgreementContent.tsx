@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
 import SButton from "../Button/SButton";
 import { useDebounce } from "../../hooks/useDebounce";
 import TransactionService from "../../services/TransactionService";
-import { Transaction } from "../../types/type";
+import { ContractState, Transaction } from "../../types/type";
+import { useNavigate } from "react-router-dom";
+import Alert, { AlertColor } from "@mui/material/Alert";
 
 const Container = styled.div`
   height: 60%;
@@ -12,6 +14,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 const AgrContent = styled.div`
+  position: relative;
   height: calc(100% - 115px);
 `;
 const AgrAction = styled.div`
@@ -41,32 +44,160 @@ export const Center = styled.div`
 
 interface AgreementContentProps {
   transaction: Transaction;
+  refresh: boolean;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AgreementContent = ({ transaction }: AgreementContentProps) => {
-  const [value, setValue] = useState<string>("<ol><li>abcdefgh</li><li>b</li><li>c</li></ol>");
+const AgreementContent = ({
+  transaction,
+  refresh,
+  setRefresh,
+}: AgreementContentProps) => {
+  const [value, setValue] = useState<string>("");
+  const [error, setError] = useState<any>(null);
+  const [aHasConfirmed, setAHasConfirmed] = useState(false);
+  const [bHasConfirmed, setBHasConfirmed] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setValue(transaction.contract || "")
+  const admin = useMemo(() => {
+    const currentUserId = JSON.parse(
+      localStorage.getItem("currentUser") || "{}"
+    )._id;
+    return {
+      isAdminA: currentUserId === transaction.adminA?._id,
+      isAdminB: currentUserId === transaction.adminB?._id,
+      isAdmin:
+        currentUserId === transaction.adminA?._id ||
+        currentUserId === transaction.adminB?._id,
+    };
   }, [transaction]);
 
-  // const valueQuery = useDebounce(value, 3000);
+  const isConfirmed = useMemo(() => {
+    return transaction.contractState === ContractState.Confirmed;
+  }, [transaction]);
 
-  // useEffect(() => {
-  //   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-  //   TransactionService.updateContractContent(
-  //     transaction._id || "65131d75633ac505425d1ff9",
-  //     valueQuery,
-  //     currentUser.jwt
-  //   ).then((res) => {
-  //     console.log(res);
-  //   });
-  // }, [valueQuery, transaction]);
+  useEffect(() => {
+    setValue(transaction.contract || "");
+    if (transaction.contractState) {
+      setAHasConfirmed(
+        transaction.contractState === ContractState.WaitB ? true : false
+      );
+      setBHasConfirmed(
+        transaction.contractState === ContractState.WaitA ? true : false
+      );
+    }
+  }, [transaction]);
+
+  const handleUpdateContractContent = async () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    try {
+      await TransactionService.updateContractContent(
+        transaction._id || "",
+        value,
+        currentUser.jwt
+      ).then((res) => {
+        setError(false);
+        setRefresh(!refresh);
+      });
+    } catch (error: any) {
+      setError(error.response);
+    } finally {
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+  };
+
+  const handleConfirmContract = async () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    try {
+      await TransactionService.confirmContract(
+        transaction._id || "",
+        currentUser.jwt
+      ).then((res) => {
+        setRefresh(!refresh);
+      });
+    } catch (error: any) {
+      setError(error.response);
+    } finally {
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+  };
+
+  const handleCancelContract = async () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    try {
+      await TransactionService.cancelConfirmContract(
+        transaction._id || "",
+        currentUser.jwt
+      ).then((res) => {
+        setRefresh(!refresh);
+      });
+    } catch (error: any) {
+      setError(error.response);
+    } finally {
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+  };
+
+  const TransactionAlert = (
+    value: string,
+    type?: AlertColor,
+    resetError?: boolean
+  ) => {
+    if (resetError) {
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+    return (
+      <Alert
+        severity={type}
+        sx={{
+          position: "absolute",
+          right: 0,
+          bottom: 0,
+          width: "100%",
+          zIndex: 1000,
+        }}
+      >
+        {value}
+      </Alert>
+    );
+  };
 
   return (
     <Container>
       <AgrContent>
+        {error === false && TransactionAlert("Đã lưu thành công", "success")}
+        {error?.data?.message ===
+          "You can't update contract content when transaction is not drafting" &&
+          TransactionAlert(
+            "Không thể lưu cập nhật nội dung hợp đồng khi bên của bạn đã bấm xác nhận",
+            "error"
+          )}
+        {error === "You do not have permission to do this" &&
+          TransactionAlert("Bạn không có quyền làm việc này", "error", true)}
+        {error === "You only have permission in the group A" &&
+          TransactionAlert(
+            "Bạn là admin bên A. Bạn chỉ có quyền đối với bên A",
+            "error",
+            true
+          )}
+        {error === "You only have permission in the group B" &&
+          TransactionAlert(
+            "Bạn là admin bên B. Bạn chỉ có quyền đối với bên B",
+            "error",
+            true
+          )}
+        {error?.data?.message === "You have already confirmed this contract" &&
+          TransactionAlert("Bạn đã xác nhận đồng ý thoải thuận này", "error")}
         <ReactQuill
+          readOnly={isConfirmed}
           theme="snow"
           value={value}
           onChange={setValue}
@@ -76,10 +207,79 @@ const AgreementContent = ({ transaction }: AgreementContentProps) => {
       <AgrAction>
         <AgrActionTop>
           <Center style={{ flex: 1 }}>
-            <SButton>Bên A Xác Nhận Đồng Ý</SButton>
+            <SButton
+              disabled={isConfirmed}
+              color={!aHasConfirmed ? "primary" : "error"}
+              onClick={(e) => {
+                if (!admin.isAdmin) {
+                  setError("You do not have permission to do this");
+                  return;
+                }
+                if (!admin.isAdminA) {
+                  setError("You only have permission in the group B");
+                  return;
+                }
+                setAHasConfirmed(!aHasConfirmed);
+                if (aHasConfirmed) {
+                  handleCancelContract();
+                } else {
+                  handleConfirmContract();
+                }
+              }}
+            >
+              {isConfirmed
+                ? "Bên A Đã Xác Nhận Đồng Ý"
+                : aHasConfirmed
+                ? "Bên A Hủy Xác Nhận"
+                : "Bên A Xác Nhận Đồng Ý"}
+            </SButton>
+          </Center>
+          <Center
+            style={{
+              flex: 1,
+              gap: "20px",
+              borderLeft: "1px solid #ccc",
+              borderRight: "1px solid #ccc",
+            }}
+          >
+            <SButton color="secondary" onClick={(e) => navigate("/")}>
+              Quay lại
+            </SButton>
+            <SButton
+              disabled={isConfirmed}
+              color="success"
+              onClick={(e) => handleUpdateContractContent()}
+            >
+              Lưu
+            </SButton>
           </Center>
           <Center style={{ flex: 1 }}>
-            <SButton>Bên B Xác Nhận Đồng Ý</SButton>
+            <SButton
+              disabled={isConfirmed}
+              color={!bHasConfirmed ? "primary" : "error"}
+              onClick={(e) => {
+                if (!admin.isAdmin) {
+                  setError("You do not have permission to do this");
+                  return;
+                }
+                if (!admin.isAdminB) {
+                  setError("You only have permission in the group A");
+                  return;
+                }
+                setBHasConfirmed(!bHasConfirmed);
+                if (bHasConfirmed) {
+                  handleCancelContract();
+                } else {
+                  handleConfirmContract();
+                }
+              }}
+            >
+              {isConfirmed
+                ? "Bên B Đã Xác Nhận Đồng Ý"
+                : bHasConfirmed
+                ? "Bên B Hủy Xác Nhận"
+                : "Bên B Xác Nhận Đồng Ý"}
+            </SButton>
           </Center>
         </AgrActionTop>
         <AgrActionBottom>

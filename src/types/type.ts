@@ -15,7 +15,7 @@ export interface Transaction {
   name?: string;
   amount?: string;
   transactionState?: string;
-  contractState?: string;
+  contractState?: ContractState;
   adminA?: User;
   adminB?: User;
   membersA?: Array<User>;
@@ -23,4 +23,11 @@ export interface Transaction {
   contract?: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export enum ContractState {
+  Drafting = "drafting",
+  WaitA = "waita",
+  WaitB = "waitb",
+  Confirmed = "confirmed",
 }

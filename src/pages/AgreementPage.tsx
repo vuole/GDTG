@@ -62,7 +62,11 @@ const AgreementPage = () => {
         setRefresh={setRefresh}
       />
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <AgreementContent transaction={currentTransaction}/>
+        <AgreementContent
+          transaction={currentTransaction}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
         <AgreementChat />
       </div>
       <AgreementMembers

@@ -42,7 +42,7 @@ export default function THTopBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Logo
+            Trung Gian Giao Dịch
           </Typography>
           <div>
             <IconButton color="inherit" sx={{ marginRight: "-10px" }}>

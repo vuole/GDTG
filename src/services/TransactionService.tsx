@@ -61,7 +61,35 @@ export default {
     try {
       const res = await axios.put(
         `${BASE_URL}/transactions/contractcontent/${transactionId}`,
-        qs.stringify({contractContent}),
+        qs.stringify({ contractContent }),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  confirmContract: async (transactionId: string, token: string) => {
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/transactions/confirmcontract/${transactionId}`,
+        qs.stringify({}),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  cancelConfirmContract: async (transactionId: string, token: string) => {
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/transactions/cancelconfirm/${transactionId}`,
+        qs.stringify({}),
         {
           headers: { Authorization: `Bearer ${token}` },
         }
