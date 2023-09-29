@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styledMUI(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#00524E",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -127,6 +127,7 @@ export default function TransactionHistory() {
                 <StyledTableCell align="right">
                   <SButton
                     size="small"
+                    color="secondary"
                     onClick={(e) =>
                       navigate(`/agreement/${transaction._id}`, {
                         state: { id: transaction._id },

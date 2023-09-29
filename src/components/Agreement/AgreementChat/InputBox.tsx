@@ -1,8 +1,7 @@
 import TextField from "@mui/material/TextField";
 import styled from "styled-components";
 import SButton from "../../Button/SButton";
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useState } from "react";
 
 const Container = styled.div`
   padding: 0 10px 0 0;
@@ -11,13 +10,12 @@ const Container = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const InputBox = () => {
-  const [socket, setSocket] = useState<any>(null);
+const InputBox = ({socket}: any) => {
   const [textMessage, setTextMessage] = useState<string>("");
-
-  useEffect(() => {
-    setSocket(io("http://localhost:8000/chat"));
-  }, []);
+  
+  // const handleSendMessage = () => {
+  //   socket?.emit("messagea")
+  // }
 
   return (
     <Container>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Logo } from "../components/FormWrapper/FormWrapper";
+import { TextLogo } from "../components/FormWrapper/FormWrapper";
 import { useEffect, useState } from "react";
 import { User } from "../types/type";
 import UserService from "../services/UserService";
@@ -55,7 +55,7 @@ const ProfilePage = () => {
   return (
     <Container>
       <Wrapper>
-        <Logo>Thông Tin Cá Nhân</Logo>
+        <TextLogo>Thông Tin Cá Nhân</TextLogo>
         {isError === false && (
           <Alert severity="success">Cập nhật hồ sơ thành công</Alert>
         )}

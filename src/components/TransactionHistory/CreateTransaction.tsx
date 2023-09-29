@@ -61,7 +61,7 @@ export default function CreateTransaction(props: CreateTransactionProps) {
 
   return (
     <SFormDialog
-      actionName="Tạo Giao Dịch"
+      actionName="Tạo giao dịch"
       title="Tạo Giao Dịch"
       isError={isErrorForm}
       onSave={createTransation}

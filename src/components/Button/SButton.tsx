@@ -1,11 +1,25 @@
 import { Button, ButtonProps } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { ReactElement } from "react";
 
-const SButton = ({ children, ...props }: ButtonProps) => {
+interface StyledButtonProps extends ButtonProps {
+  children: ReactElement | string;
+}
+
+const StyledButton = styled(Button)<StyledButtonProps>(({ theme }) => ({
+  textTransform: "none",
+  "&.MuiButton-containedPrimary": {
+    backgroundColor: "#29BA74",
+  },
+  "&.MuiButton-containedSecondary": {
+    backgroundColor: "#00524e",
+  },
+}));
+
+export default function SButton({ children, ...props }: StyledButtonProps) {
   return (
-    <Button variant="contained" style={{ textTransform: "unset" }} {...props}>
+    <StyledButton variant="contained" {...props}>
       {children}
-    </Button>
+    </StyledButton>
   );
-};
-
-export default SButton;
+}

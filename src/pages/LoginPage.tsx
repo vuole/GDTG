@@ -1,5 +1,5 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import FormWrapper from "../components/FormWrapper/FormWrapper";
+import FormWrapper, { Nav } from "../components/FormWrapper/FormWrapper";
 import { FormContainer } from "./RegisterPage";
 import { useMemo, useState } from "react";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
@@ -81,6 +81,9 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           isEmty={password === ""}
         />
+        <Nav style={{ marginTop: "-8px" }}>
+          <Link to={"/"}>Quên mật khẩu?</Link>
+        </Nav>
         <SButton
           type="submit"
           onClick={(e) => handleSubmit(e)}

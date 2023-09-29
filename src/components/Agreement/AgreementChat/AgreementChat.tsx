@@ -9,11 +9,12 @@ const Container = styled.div`
   overflow-y: overlay;
   overflow-x: hidden;
 `;
+
 const AgreementChat = (props: any) => {
   return (
     <Container>
       <Messages />
-      <InputBox />
+      <InputBox socket={props.socket}/>
     </Container>
   );
 };

@@ -99,4 +99,22 @@ export default {
       throw error;
     }
   },
+  sendMessage: async (
+    message: string,
+    transactionId: string,
+    token: string
+  ) => {
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/transactions/message/${transactionId}`,
+        qs.stringify({ message }),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

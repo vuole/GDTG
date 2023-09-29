@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Logo } from "../components/FormWrapper/FormWrapper";
+import { TextLogo } from "../components/FormWrapper/FormWrapper";
 import PasswordTextField from "../components/PasswordTextField/PasswordTextField";
 import { Container, Wrapper } from "./ProfilePage";
 import SButton from "../components/Button/SButton";
@@ -54,7 +54,7 @@ const PasswordChangePage = () => {
   return (
     <Container>
       <Wrapper>
-        <Logo>Đổi Mật Khẩu</Logo>
+        <TextLogo>Đổi Mật Khẩu</TextLogo>
         {Object.keys(data).length > 0 && (
           <Alert severity="success">Đổi mật khẩu thành công</Alert>
         )}

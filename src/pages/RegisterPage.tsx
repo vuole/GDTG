@@ -10,7 +10,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 
 export const FormContainer = styled.div`
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,13 +91,14 @@ const RegisterPage = () => {
           onClick={(e) => handleSubmit(e)}
           disabled={isErrorForm || isLoading}
         >
+          <>
           <p>Đăng Ký</p>
           {isLoading && (
             <CircularProgress
               sx={{ color: "white", marginLeft: "5px" }}
               size={25}
             />
-          )}
+          )}</>
         </SButton>
       </FormWrapper>
     </FormContainer>

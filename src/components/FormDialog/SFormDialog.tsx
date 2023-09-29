@@ -28,7 +28,7 @@ export default function SFormDialog({ children, ...props }: SFormDialogProps) {
 
   return (
     <div>
-      <SButton onClick={handleClickOpen}>{props.actionName}</SButton>
+      <SButton onClick={handleClickOpen} color="secondary">{props.actionName}</SButton>
       <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle sx={{ marginBottom: "10px" }}>{props.title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
