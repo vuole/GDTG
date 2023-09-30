@@ -2,26 +2,27 @@ import styled from "styled-components";
 import Messages from "./Messages";
 import { Socket } from "socket.io-client";
 import InputBox from "./InputBox";
-import { Transaction } from "../../../types/type";
+import { Transaction, User } from "../../../types/type";
 
 const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   overflow-y: overlay;
   overflow-x: hidden;
 `;
 
 export interface AgreementChatProps {
-  socket: Socket;
   data: Transaction;
+  currentUser: User;
 }
 
-const AgreementChat = ({ socket, data }: AgreementChatProps) => {
+const AgreementChat = ({ data, currentUser }: AgreementChatProps) => {
   return (
     <Container>
       <Messages data={data} />
-      <InputBox socket={socket} data={data} />
+      <InputBox data={data} currentUser={currentUser} />
     </Container>
   );
 };

@@ -20,10 +20,10 @@ const chatReducer = (state: Conversations, action: any) => {
       return {
         conversations: action.payload,
       };
-    // case "SENT_MESSAGE":
-    //   return {
-    //     conversations: [...state.conversations, action.payload],
-    //   };
+    case "SENT_MESSAGE":
+      return {
+        conversations: [...state.conversations, action.payload],
+      };
 
     default:
       return state;

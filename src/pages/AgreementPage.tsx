@@ -3,12 +3,13 @@ import AgreementMembers from "../components/Agreement/AgreementMembers";
 import AgreementContent from "../components/Agreement/AgreementContent";
 import styled from "styled-components";
 import AgreementChat from "../components/Agreement/AgreementChat/AgreementChat";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import TransactionService from "../services/TransactionService";
 import { useLocation } from "react-router-dom";
-import { Transaction } from "../types/type";
+import { MessageType, Transaction } from "../types/type";
 import { Socket, io } from "socket.io-client";
 import { SOCKET_URL } from "../services/config";
+import { ChatContext } from "../contexts/ChatContext";
 
 const Container = styled.div`
   width: 100%;
@@ -16,24 +17,26 @@ const Container = styled.div`
   display: flex;
 `;
 
-const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-const socket: Socket = io(SOCKET_URL, {
-  auth: {
-    token: currentUser.jwt,
-  },
-});
-
 const AgreementPage = () => {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [currentTransaction, setCurrentTransaction] = useState<Transaction>({});
   const [refresh, setRefresh] = useState(false);
+  const { dispatch } = useContext(ChatContext);
 
   const location = useLocation();
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      socket?.emit("transactionView", { transactionID: location?.state?.id });
-    });
+  const currentUser = useMemo(() => {
+    return JSON.parse(localStorage.getItem("currentUser") || "{}");
   }, []);
+
+  useEffect(() => {
+    TransactionService.getTransactionDetail(
+      location?.state?.id,
+      currentUser.jwt
+    ).then((res) => {
+      setCurrentTransaction(res);
+    });
+  }, [refresh]);
 
   const membersA = useMemo(() => {
     if (
@@ -57,15 +60,59 @@ const AgreementPage = () => {
     return currentTransaction.membersB;
   }, [currentTransaction]);
 
+  const isMemberA = useMemo(() => {
+    const memberA = currentTransaction.membersA?.find(
+      (member) => member._id === currentUser._id
+    );
+    return !memberA ? false : true;
+  }, [currentTransaction]);
+
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-    TransactionService.getTransactionDetail(
-      location?.state?.id,
-      currentUser.jwt
-    ).then((res) => {
-      setCurrentTransaction(res);
+    setSocket(
+      io(SOCKET_URL, {
+        auth: {
+          token: currentUser.jwt,
+        },
+      })
+    );
+    return () => {
+      socket?.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket?.on("connect", () => {
+      socket?.emit("transactionView", { transactionID: location?.state?.id });
+      socket.on("messagea", (data) => {
+        dispatch({
+          type: "SENT_MESSAGE",
+          payload: {
+            message: data.message,
+            senderID: data.sender._id,
+            senderName: data.sender.name,
+            messageType: MessageType.MessageA,
+            createAt: data.createAt,
+          },
+        });
+      });
+      socket.on("messageb", (data) => {
+        dispatch({
+          type: "SENT_MESSAGE",
+          payload: {
+            message: data.message,
+            senderID: data.sender._id,
+            senderName: data.sender.name,
+            messageType: MessageType.MessageB,
+            createAt: data.createAt,
+          },
+        });
+      });
     });
-  }, [refresh]);
+    return () => {
+      socket?.disconnect();
+    };
+  }, [socket]);
+
   return (
     <Container>
       <AgreementMembers
@@ -82,7 +129,7 @@ const AgreementPage = () => {
           refresh={refresh}
           setRefresh={setRefresh}
         />
-        <AgreementChat socket={socket} data={currentTransaction} />
+        <AgreementChat data={currentTransaction} currentUser={currentUser} />
       </div>
       <AgreementMembers
         title="Thành Viên Bên B:"

@@ -7,6 +7,7 @@ import { useContext, useEffect } from "react";
 import { MessageType, Transaction } from "../../../types/type";
 
 const Container = styled.div`
+  flex: 1;
   padding: 8px;
   overflow-y: overlay;
   overflow-x: hidden;
@@ -45,9 +46,7 @@ const Messages = ({ data }: MessagesProps) => {
         tempId = m.senderID || "";
         return (
           <MessageContainer $isLeft={isLeft} key={i}>
-            {isFirstPoint && (
-              <Avatar src="" alt={tempCount++ + ""} />
-            )}
+            {isFirstPoint && <Avatar src="" alt={tempCount++ + ""} />}
             <Message
               data={m}
               isLeft={isLeft}

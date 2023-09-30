@@ -16,50 +16,15 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-
-const InputBox = ({ socket, data }: AgreementChatProps) => {
+const InputBox = ({ data, currentUser }: AgreementChatProps) => {
   const [textMessage, setTextMessage] = useState<string>("");
-  const { dispatch } = useContext(ChatContext);
-
-  const isMemberA = useMemo(() => {
-    const memberA = data.membersA?.find(
-      (member) => member._id === currentUser._id
-    );
-    return !memberA ? false : true;
-  }, [data]);
-
-  useEffect(() => {
-    socket.on("messagea", (data) => {
-      dispatch({
-        type: "SENT_MESSAGE",
-        payload: {
-          message: data.message,
-          senderID: data.sender._id,
-          senderName: data.sender.name,
-          messageType: MessageType.MessageA,
-        },
-      });
-    });
-    socket.on("messageb", (data) => {
-      dispatch({
-        type: "SENT_MESSAGE",
-        payload: {
-          message: data.message,
-          senderID: data.sender._id,
-          senderName: data.sender.name,
-          messageType: MessageType.MessageB,
-        },
-      });
-    });
-  }, []);
 
   const handleSendMessage = () => {
-    if (textMessage) {
+    if (textMessage) {     
       TransactionService.sendMessage(
         textMessage,
         data._id || "",
-        currentUser.jwt
+        currentUser.jwt || ""
       ).then((res) => {
         console.log(res);
       });

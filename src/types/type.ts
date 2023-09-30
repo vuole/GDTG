@@ -8,6 +8,7 @@ export interface User {
   address?: string;
   companyName?: string;
   position?: string;
+  jwt?: string;
 }
 
 export interface Transaction {
