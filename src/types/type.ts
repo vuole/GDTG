@@ -21,6 +21,7 @@ export interface Transaction {
   membersA?: Array<User>;
   membersB?: Array<User>;
   contract?: string;
+  conversations?: Array<Message>;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -30,4 +31,22 @@ export enum ContractState {
   WaitA = "waita",
   WaitB = "waitb",
   Confirmed = "confirmed",
+}
+
+export enum MessageType {
+  MessageA = "messagea",
+  MessageB = "messageb",
+}
+
+export interface Message {
+  _id?: string;
+  senderID?: string;
+  senderName?: string;
+  message?: string;
+  messageType?: MessageType;
+  createdAt?: string;
+}
+
+export interface Conversations {
+  conversations: Array<Message>;
 }

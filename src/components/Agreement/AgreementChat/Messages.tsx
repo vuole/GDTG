@@ -2,6 +2,9 @@ import styled from "styled-components";
 import Message from "./Message";
 import { messages, users } from "./MockData";
 import Avatar from "@mui/material/Avatar";
+import { ChatContext } from "../../../contexts/ChatContext";
+import { useContext, useEffect } from "react";
+import { MessageType, Transaction } from "../../../types/type";
 
 const Container = styled.div`
   padding: 8px;
@@ -15,24 +18,35 @@ const MessageContainer = styled.div<{ $isLeft: boolean }>`
   gap: 5px;
 `;
 
-let tempId: number = -1;
+interface MessagesProps {
+  data: Transaction;
+}
+
+let tempId: string = "";
 let tempCount: number = 0;
-const Messages = () => {
+
+const Messages = ({ data }: MessagesProps) => {
+  const { chatContextData, dispatch } = useContext(ChatContext);
+
+  useEffect(() => {
+    dispatch({ type: "INIT_MESSAGE", payload: data.conversations });
+  }, [data]);
+
   return (
     <Container>
-      {messages.map((m, i) => {
-        const isLeft = m.partyId == 1;
-        if (m.userId != tempId) {
+      {chatContextData.conversations?.map((m, i) => {
+        const isLeft = m.messageType == MessageType.MessageA;
+        if (m.senderID != tempId) {
           tempCount = 0;
         }
-        const isFirstPoint = m.userId != tempId && tempCount === 0;
-        const isEndPoint = tempId === -1 || m.userId != tempId;
-        const user = users.find((user) => user.id == m.userId);
-        tempId = m.userId;
+        const isFirstPoint = m.senderID != tempId && tempCount === 0;
+        const isEndPoint = tempId === "" || m.senderID != tempId;
+        // const user = users.find((user) => user.id == m.userId);
+        tempId = m.senderID || "";
         return (
           <MessageContainer $isLeft={isLeft} key={i}>
             {isFirstPoint && (
-              <Avatar src={user?.avatar} alt={tempCount++ + ""} />
+              <Avatar src="" alt={tempCount++ + ""} />
             )}
             <Message
               data={m}

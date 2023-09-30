@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Messages from "./Messages";
+import { Socket } from "socket.io-client";
 import InputBox from "./InputBox";
+import { Transaction } from "../../../types/type";
 
 const Container = styled.div`
   flex: 1;
@@ -10,11 +12,16 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
-const AgreementChat = (props: any) => {
+export interface AgreementChatProps {
+  socket: Socket;
+  data: Transaction;
+}
+
+const AgreementChat = ({ socket, data }: AgreementChatProps) => {
   return (
     <Container>
-      <Messages />
-      <InputBox socket={props.socket}/>
+      <Messages data={data} />
+      <InputBox socket={socket} data={data} />
     </Container>
   );
 };

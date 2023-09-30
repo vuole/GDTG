@@ -64,11 +64,15 @@ export default {
       throw error;
     }
   },
-  findUser: async (keyword: string) => {
+  findUser: async (keyword: string, token: string) => {
     try {
-      const res = await axios.get(`${BASE_URL}/users/find`, {
-        params: { keyword: keyword },
-      });
+      const res = await axios.get(
+        `${BASE_URL}/users/find`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { keyword: keyword },
+        }
+      );
       return res.data;
     } catch (error) {
       throw error;

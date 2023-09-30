@@ -48,8 +48,9 @@ const AgreementMembers = (props: AgreementMembersProps) => {
   const searchQuery = useDebounce(keyWord, 1000);
 
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
     if (searchQuery) {
-      UserService.findUser(searchQuery).then((res) => {
+      UserService.findUser(searchQuery, currentUser.jwt).then((res) => {
         setSearchResult(res);
       });
     } else {
@@ -103,9 +104,7 @@ const AgreementMembers = (props: AgreementMembersProps) => {
         {error?.data?.message === "This member already added" && (
           <Alert severity="error">Thành viên này đã được thêm</Alert>
         )}
-        {addMemberIsDone && (
-          <Alert severity="success">Thêm thành công</Alert>
-        )}
+        {addMemberIsDone && <Alert severity="success">Thêm thành công</Alert>}
         <STextField
           placeholder="Email hoặc số điện thoại"
           size="small"

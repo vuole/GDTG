@@ -105,7 +105,7 @@ export default {
     token: string
   ) => {
     try {
-      const res = await axios.put(
+      const res = await axios.post(
         `${BASE_URL}/transactions/message/${transactionId}`,
         qs.stringify({ message }),
         {

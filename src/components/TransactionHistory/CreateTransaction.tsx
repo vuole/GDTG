@@ -34,8 +34,9 @@ export default function CreateTransaction(props: CreateTransactionProps) {
   }, [name, adminB]);
 
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
     if (searchQuery) {
-      UserService.findUser(searchQuery).then((res) => {
+      UserService.findUser(searchQuery, currentUser.jwt).then((res) => {
         setSearchResult(res);
       });
     } else {

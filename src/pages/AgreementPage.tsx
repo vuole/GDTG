@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import TransactionService from "../services/TransactionService";
 import { useLocation } from "react-router-dom";
 import { Transaction } from "../types/type";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 import { SOCKET_URL } from "../services/config";
 
 const Container = styled.div`
@@ -17,14 +17,13 @@ const Container = styled.div`
 `;
 
 const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-const socket = io(SOCKET_URL, {
+const socket: Socket = io(SOCKET_URL, {
   auth: {
     token: currentUser.jwt,
   },
 });
 
 const AgreementPage = () => {
-  // const [socket, setSocket] = useState<any>(null);
   const [currentTransaction, setCurrentTransaction] = useState<Transaction>({});
   const [refresh, setRefresh] = useState(false);
 
@@ -83,7 +82,7 @@ const AgreementPage = () => {
           refresh={refresh}
           setRefresh={setRefresh}
         />
-        <AgreementChat socket={socket} />
+        <AgreementChat socket={socket} data={currentTransaction} />
       </div>
       <AgreementMembers
         title="Thành Viên Bên B:"
