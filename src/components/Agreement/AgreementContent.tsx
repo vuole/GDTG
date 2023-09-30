@@ -209,7 +209,7 @@ const AgreementContent = ({
           <Center style={{ flex: 1 }}>
             <SButton
               disabled={isConfirmed}
-              color={!aHasConfirmed ? "primary" : "error"}
+              color={!aHasConfirmed ? "info" : "error"}
               onClick={(e) => {
                 if (!admin.isAdmin) {
                   setError("You do not have permission to do this");
@@ -247,7 +247,6 @@ const AgreementContent = ({
             </SButton>
             <SButton
               disabled={isConfirmed}
-              color="success"
               onClick={(e) => handleUpdateContractContent()}
             >
               Lưu
@@ -256,7 +255,7 @@ const AgreementContent = ({
           <Center style={{ flex: 1 }}>
             <SButton
               disabled={isConfirmed}
-              color={!bHasConfirmed ? "primary" : "error"}
+              color={!bHasConfirmed ? "info" : "error"}
               onClick={(e) => {
                 if (!admin.isAdmin) {
                   setError("You do not have permission to do this");

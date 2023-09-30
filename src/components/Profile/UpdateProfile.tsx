@@ -80,7 +80,7 @@ const UpdateProfile = ({
         Quay lại
       </SButton>
       <SFormDialog
-        title="Cập nhật hồ sơ"
+        title="Cập Nhật Hồ Sơ"
         actionName="Cập nhật"
         isError={isErrorForm}
         onSave={updateProfile}

@@ -14,6 +14,10 @@ const StyledButton = styled(Button)<StyledButtonProps>(({ theme }) => ({
   "&.MuiButton-containedSecondary": {
     backgroundColor: "#00524e",
   },
+  "&.MuiButton-containedInfo": {
+    backgroundColor: "#0095C5",
+  },
+  "&:disabled": { backgroundColor: "#E0E0E0" },
 }));
 
 export default function SButton({ children, ...props }: StyledButtonProps) {

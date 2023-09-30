@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Messages from "./Messages";
-import { Socket } from "socket.io-client";
 import InputBox from "./InputBox";
 import { Transaction, User } from "../../../types/type";
 

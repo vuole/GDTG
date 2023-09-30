@@ -10,7 +10,7 @@ import Alert from "@mui/material/Alert";
 
 const ActionButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const PasswordChangePage = () => {

@@ -1,12 +1,9 @@
 import TextField from "@mui/material/TextField";
 import styled from "styled-components";
 import SButton from "../../Button/SButton";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { Socket } from "socket.io-client";
 import { AgreementChatProps } from "./AgreementChat";
 import TransactionService from "../../../services/TransactionService";
-import { ChatContext } from "../../../contexts/ChatContext";
-import { MessageType } from "../../../types/type";
+import { useState } from "react";
 
 const Container = styled.div`
   padding: 0 10px 0 0;
@@ -20,14 +17,12 @@ const InputBox = ({ data, currentUser }: AgreementChatProps) => {
   const [textMessage, setTextMessage] = useState<string>("");
 
   const handleSendMessage = () => {
-    if (textMessage) {     
+    if (textMessage) {
       TransactionService.sendMessage(
         textMessage,
         data._id || "",
         currentUser.jwt || ""
-      ).then((res) => {
-        console.log(res);
-      });
+      ).then((res) => {});
       setTextMessage("");
     }
   };
@@ -48,7 +43,9 @@ const InputBox = ({ data, currentUser }: AgreementChatProps) => {
         onKeyDown={(e) => onEnterPress(e)}
         onChange={(e) => setTextMessage(e.target.value)}
       />
-      <SButton onClick={(e) => handleSendMessage()}>Gửi</SButton>
+      <SButton color="info" onClick={(e) => handleSendMessage()}>
+        Gửi
+      </SButton>
     </Container>
   );
 };

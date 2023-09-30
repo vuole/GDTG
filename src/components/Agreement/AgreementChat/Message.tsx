@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { users } from "./MockData";
 import Moment from "react-moment";
 import { Message as MessageType} from "../../../types/type";
 
@@ -23,7 +22,7 @@ const Container = styled.div<{
   margin-right: ${(props) =>
     !props.$isLeft && !props.$isFirstPoint ? "45px" : "0px"};
   .sending-time {
-    display: ${(props) => (!props.$isEndPoint ? "block" : "none")};
+    display: ${(props) => (props.$isEndPoint ? "block" : "none")};
     font-size: 10px;
     color: grey;
   }
@@ -51,19 +50,17 @@ interface MessageProps {
 data: MessageType;
 isLeft: boolean;
 isFirstPoint: boolean;
-isEndPoint: boolean;
+isEndPoint?: boolean;
 }
 
-const Message = ({ data, isLeft, isFirstPoint, isEndPoint }: MessageProps) => {
-  // const user = users.find((e: any) => e.id === data.userId);
-
+const Message = ({ data, isLeft, isFirstPoint, isEndPoint=true }: MessageProps) => {
   return (
     <Container
       $isLeft={isLeft}
       $isFirstPoint={isFirstPoint}
       $isEndPoint={isEndPoint}
     >
-      <Sender $isFirstPoint={isFirstPoint}>{data.senderID}</Sender>
+      <Sender $isFirstPoint={isFirstPoint}>{data.senderName}</Sender>
       <TextMessage>{data.message}</TextMessage>
       <Moment className="sending-time" calendar={calendarStrings}>
         {data.createdAt}

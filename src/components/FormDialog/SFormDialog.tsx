@@ -28,11 +28,22 @@ export default function SFormDialog({ children, ...props }: SFormDialogProps) {
 
   return (
     <div>
-      <SButton onClick={handleClickOpen} color="secondary">{props.actionName}</SButton>
-      <Dialog open={open} onClose={handleClose} fullWidth>
-        <DialogTitle sx={{ marginBottom: "10px" }}>{props.title}</DialogTitle>
+      <SButton onClick={handleClickOpen} color="info">
+        {props.actionName}
+      </SButton>
+      <Dialog
+        sx={{
+          "& .MuiList-root": { paddingBottom: "0px", paddingTop: "0px" },
+        }}
+        open={open}
+        onClose={handleClose}
+        fullWidth
+      >
+        <DialogTitle sx={{ marginBottom: "0px" }}>{props.title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
-        <DialogActions>
+        <DialogActions
+          sx={{ display: "flex", justifyContent: "center", gap: "10px" }}
+        >
           <SButton
             color="error"
             onClick={(e) => {

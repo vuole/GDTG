@@ -41,7 +41,7 @@ const SearchResultList = ({
           >
             <ListItemButton>
               <ListItemAvatar>
-                <Avatar>A</Avatar>
+                <Avatar src="" />
               </ListItemAvatar>
               <ListItemText
                 primary={
