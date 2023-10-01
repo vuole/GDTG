@@ -3,7 +3,8 @@ import Message from "./Message";
 import Avatar from "@mui/material/Avatar";
 import { ChatContext } from "../../../contexts/ChatContext";
 import { useContext, useEffect } from "react";
-import { MessageType, Transaction } from "../../../types/type";
+import { MessageType } from "../../../types/type";
+import { AgreementChatProps } from "./AgreementChat";
 
 const Container = styled.div`
   flex: 1;
@@ -18,11 +19,7 @@ const MessageContainer = styled.div<{ $isLeft: boolean }>`
   gap: 5px;
 `;
 
-interface MessagesProps {
-  data: Transaction;
-}
-
-const Messages = ({ data }: MessagesProps) => {
+const Messages = ({ data, messagesEnd }: Omit<AgreementChatProps, "currentUser">) => {
   const { chatContextData, dispatch } = useContext(ChatContext);
 
   useEffect(() => {
@@ -44,6 +41,7 @@ const Messages = ({ data }: MessagesProps) => {
           </MessageContainer>
         );
       })}
+      <div ref={messagesEnd}></div>
     </Container>
   );
 };

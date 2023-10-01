@@ -29,7 +29,7 @@ const Container = styled.div<{
 `;
 const Sender = styled.div<{ $isFirstPoint: boolean }>`
   color: #7f69cb;
-  font-size: 10px;
+  font-size: 12px;
   display: ${(props) => (props.$isFirstPoint ? "flex" : "none")};
 `;
 const TextMessage = styled.div`

@@ -42,7 +42,12 @@ export default function SFormDialog({ children, ...props }: SFormDialogProps) {
         <DialogTitle sx={{ marginBottom: "0px" }}>{props.title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions
-          sx={{ display: "flex", justifyContent: "center", gap: "10px" }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+            paddingBottom: "16px",
+          }}
         >
           <SButton
             color="error"

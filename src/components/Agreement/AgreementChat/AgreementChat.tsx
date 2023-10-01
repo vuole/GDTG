@@ -15,12 +15,17 @@ const Container = styled.div`
 export interface AgreementChatProps {
   data: Transaction;
   currentUser: User;
+  messagesEnd: React.RefObject<HTMLDivElement>;
 }
 
-const AgreementChat = ({ data, currentUser }: AgreementChatProps) => {
+const AgreementChat = ({
+  data,
+  currentUser,
+  messagesEnd,
+}: AgreementChatProps) => {
   return (
     <Container>
-      <Messages data={data} />
+      <Messages data={data} messagesEnd={messagesEnd} />
       <InputBox data={data} currentUser={currentUser} />
     </Container>
   );

@@ -3,7 +3,7 @@ import AgreementMembers from "../components/Agreement/AgreementMembers";
 import AgreementContent from "../components/Agreement/AgreementContent";
 import styled from "styled-components";
 import AgreementChat from "../components/Agreement/AgreementChat/AgreementChat";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import TransactionService from "../services/TransactionService";
 import { useLocation } from "react-router-dom";
 import { MessageType, Transaction } from "../types/type";
@@ -21,8 +21,8 @@ const AgreementPage = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentTransaction, setCurrentTransaction] = useState<Transaction>({});
   const [refresh, setRefresh] = useState(false);
-  const { dispatch } = useContext(ChatContext);
-
+  const messagesEnd = useRef<HTMLDivElement>(null);
+  const { chatContextData, dispatch } = useContext(ChatContext);
   const location = useLocation();
 
   const currentUser = useMemo(() => {
@@ -38,6 +38,7 @@ const AgreementPage = () => {
     });
   }, [refresh]);
 
+  //refactor
   const membersA = useMemo(() => {
     if (
       !currentTransaction.membersA?.find(
@@ -59,6 +60,7 @@ const AgreementPage = () => {
     }
     return currentTransaction.membersB;
   }, [currentTransaction]);
+  //
 
   const isMemberA = useMemo(() => {
     const memberA = currentTransaction.membersA?.find(
@@ -113,6 +115,14 @@ const AgreementPage = () => {
     };
   }, [socket]);
 
+  const scrollToBottom = () => {
+    messagesEnd?.current?.scrollIntoView({ behavior:"smooth", block: "end" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatContextData]);
+
   return (
     <Container>
       <AgreementMembers
@@ -129,7 +139,11 @@ const AgreementPage = () => {
           refresh={refresh}
           setRefresh={setRefresh}
         />
-        <AgreementChat data={currentTransaction} currentUser={currentUser} />
+        <AgreementChat
+          data={currentTransaction}
+          currentUser={currentUser}
+          messagesEnd={messagesEnd}
+        />
       </div>
       <AgreementMembers
         title="Thành Viên Bên B:"

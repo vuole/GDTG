@@ -4,16 +4,18 @@ import SButton from "../../Button/SButton";
 import { AgreementChatProps } from "./AgreementChat";
 import TransactionService from "../../../services/TransactionService";
 import { useState } from "react";
+import STextField from "../../TextField/STextField";
+import theme from "../../../theme";
 
 const Container = styled.div`
   padding: 0 10px 0 0;
-  height: 45px;
+  height: fit-content;
   display: flex;
   align-items: center;
   gap: 10px;
 `;
 
-const InputBox = ({ data, currentUser }: AgreementChatProps) => {
+const InputBox = ({ data, currentUser }:  Omit<AgreementChatProps, "messagesEnd">) => {
   const [textMessage, setTextMessage] = useState<string>("");
 
   const handleSendMessage = () => {
@@ -29,19 +31,29 @@ const InputBox = ({ data, currentUser }: AgreementChatProps) => {
 
   const onEnterPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && e.shiftKey === false) {
+      e.preventDefault();
       handleSendMessage();
     }
   };
 
   return (
     <Container>
-      <TextField
+      <STextField
         placeholder="Aa..."
         size="small"
+        multiline
+        maxRows={4}
         fullWidth
         value={textMessage}
         onKeyDown={(e) => onEnterPress(e)}
         onChange={(e) => setTextMessage(e.target.value)}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "20px",
+            backgroundColor: theme.palette.grey["100"],
+          },
+          padding: "5px 5px 2px 5px",
+        }}
       />
       <SButton color="info" onClick={(e) => handleSendMessage()}>
         Gửi
