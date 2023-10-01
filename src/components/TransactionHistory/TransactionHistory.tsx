@@ -150,7 +150,6 @@ export default function TransactionHistory() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage="Số hàng trên trang:"
       />
     </Container>
   );

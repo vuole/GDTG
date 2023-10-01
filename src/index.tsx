@@ -5,17 +5,22 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ChatProvider } from "./contexts/ChatContext";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <AuthProvider>
-    <ChatProvider>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </ChatProvider>
+    <ThemeProvider theme={theme}>
+      <ChatProvider>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </ChatProvider>
+    </ThemeProvider>
   </AuthProvider>
 );
 
