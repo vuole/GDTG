@@ -84,6 +84,7 @@ const UpdateProfile = ({
       </SButton>
       <SFormDialog
         title="Cập Nhật Hồ Sơ"
+        actionName="Lưu"
         isError={isErrorForm}
         open={open}
         setOpen={setOpen}

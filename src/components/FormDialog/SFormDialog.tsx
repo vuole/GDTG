@@ -8,6 +8,7 @@ import SButton from "../Button/SButton";
 interface SFormDialogProps {
   children: React.ReactElement;
   title: string;
+  actionName: string;
   isError: boolean;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,7 +54,7 @@ export default function SFormDialog({ children, ...props }: SFormDialogProps) {
           }}
           disabled={props.isError}
         >
-          Lưu
+          {props.actionName}
         </SButton>
       </DialogActions>
     </Dialog>

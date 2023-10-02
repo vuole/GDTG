@@ -81,6 +81,7 @@ export default function CreateTransaction(props: CreateTransactionProps) {
       </SButton>
       <SFormDialog
         title="Tạo Giao Dịch"
+        actionName="Lưu"
         isError={isErrorForm}
         open={open}
         setOpen={setOpen}

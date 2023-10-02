@@ -4,9 +4,10 @@ import styled from "styled-components";
 import SButton from "../Button/SButton";
 import { useDebounce } from "../../hooks/useDebounce";
 import TransactionService from "../../services/TransactionService";
-import { ContractState, Transaction } from "../../types/type";
+import { ContractState, GroupType, Transaction } from "../../types/type";
 import { useNavigate } from "react-router-dom";
 import Alert, { AlertColor } from "@mui/material/Alert";
+import SFormDialog from "../FormDialog/SFormDialog";
 
 const Container = styled.div`
   height: 60%;
@@ -53,6 +54,7 @@ const AgreementContent = ({
   refresh,
   setRefresh,
 }: AgreementContentProps) => {
+  const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("");
   const [error, setError] = useState<any>(null);
   const [aHasConfirmed, setAHasConfirmed] = useState(false);
@@ -170,6 +172,30 @@ const AgreementContent = ({
     );
   };
 
+  const handleConfirm = (group: GroupType) => {
+    setOpen(true);
+    if (!admin.isAdmin) {
+      setError("You do not have permission to do this");
+      return;
+    }
+    if (group === GroupType.A && admin.isAdminB) {
+      setError("You only have permission in the group B");
+      return;
+    }
+    if (group === GroupType.B && admin.isAdminA) {
+      setError("You only have permission in the group A");
+      return;
+    }
+    if (aHasConfirmed || bHasConfirmed) {
+      handleCancelContract();
+    } else {
+      handleConfirmContract();
+    }
+    group === GroupType.A
+      ? setAHasConfirmed(!aHasConfirmed)
+      : setBHasConfirmed(!bHasConfirmed);
+  };
+
   return (
     <Container>
       <AgrContent>
@@ -196,6 +222,7 @@ const AgreementContent = ({
           )}
         {error?.data?.message === "You have already confirmed this contract" &&
           TransactionAlert("Bạn đã xác nhận đồng ý thoải thuận này", "error")}
+
         <ReactQuill
           readOnly={isConfirmed}
           theme="snow"
@@ -210,22 +237,7 @@ const AgreementContent = ({
             <SButton
               disabled={isConfirmed}
               color={!aHasConfirmed ? "info" : "error"}
-              onClick={(e) => {
-                if (!admin.isAdmin) {
-                  setError("You do not have permission to do this");
-                  return;
-                }
-                if (!admin.isAdminA) {
-                  setError("You only have permission in the group B");
-                  return;
-                }
-                setAHasConfirmed(!aHasConfirmed);
-                if (aHasConfirmed) {
-                  handleCancelContract();
-                } else {
-                  handleConfirmContract();
-                }
-              }}
+              onClick={(e) => handleConfirm(GroupType.A)}
             >
               {isConfirmed
                 ? "Bên A Đã Xác Nhận Đồng Ý"
@@ -233,6 +245,24 @@ const AgreementContent = ({
                 ? "Bên A Hủy Xác Nhận"
                 : "Bên A Xác Nhận Đồng Ý"}
             </SButton>
+            <SFormDialog
+              title={
+                (aHasConfirmed ? "Bên A " : "Bên B ") +
+                "Yêu Cầu Xác Nhận Với Nội Dung: "
+              }
+              actionName="Xác Nhận Đồng Ý"
+              isError={false}
+              open={open}
+              setOpen={setOpen}
+              onSave={() => {}}
+            >
+              <ReactQuill
+                style={{ border: "1px solid #ccc" }}
+                readOnly
+                theme="bubble"
+                value={value}
+              />
+            </SFormDialog>
           </Center>
           <Center
             style={{
@@ -256,22 +286,7 @@ const AgreementContent = ({
             <SButton
               disabled={isConfirmed}
               color={!bHasConfirmed ? "info" : "error"}
-              onClick={(e) => {
-                if (!admin.isAdmin) {
-                  setError("You do not have permission to do this");
-                  return;
-                }
-                if (!admin.isAdminB) {
-                  setError("You only have permission in the group A");
-                  return;
-                }
-                setBHasConfirmed(!bHasConfirmed);
-                if (bHasConfirmed) {
-                  handleCancelContract();
-                } else {
-                  handleConfirmContract();
-                }
-              }}
+              onClick={(e) => handleConfirm(GroupType.B)}
             >
               {isConfirmed
                 ? "Bên B Đã Xác Nhận Đồng Ý"

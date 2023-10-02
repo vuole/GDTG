@@ -39,6 +39,11 @@ export enum MessageType {
   MessageB = "messageb",
 }
 
+export enum GroupType {
+  A = "A",
+  B = "B",
+}
+
 export interface Message {
   _id?: string;
   senderID?: string;
