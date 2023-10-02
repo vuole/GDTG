@@ -7,67 +7,55 @@ import SButton from "../Button/SButton";
 
 interface SFormDialogProps {
   children: React.ReactElement;
-  actionName: string;
   title: string;
   isError: boolean;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onSave(): void;
-  onCancel(): void;
 }
 
 export default function SFormDialog({ children, ...props }: SFormDialogProps) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
-    props.onCancel();
-    setOpen(false);
+    props.setOpen(false);
   };
 
   return (
-    <div>
-      <SButton onClick={handleClickOpen} color="info">
-        {props.actionName}
-      </SButton>
-      <Dialog
+    <Dialog
+      sx={{
+        "& .MuiList-root": { paddingBottom: "0px", paddingTop: "0px" },
+      }}
+      open={props.open}
+      onClose={handleClose}
+      fullWidth
+    >
+      <DialogTitle sx={{ marginBottom: "0px" }}>{props.title}</DialogTitle>
+      <DialogContent>{children}</DialogContent>
+      <DialogActions
         sx={{
-          "& .MuiList-root": { paddingBottom: "0px", paddingTop: "0px" },
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          paddingBottom: "16px",
         }}
-        open={open}
-        onClose={handleClose}
-        fullWidth
       >
-        <DialogTitle sx={{ marginBottom: "0px" }}>{props.title}</DialogTitle>
-        <DialogContent>{children}</DialogContent>
-        <DialogActions
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            paddingBottom: "16px",
+        <SButton
+          color="error"
+          onClick={(e) => {
+            handleClose();
           }}
         >
-          <SButton
-            color="error"
-            onClick={(e) => {
-              handleClose();
-            }}
-          >
-            Hủy
-          </SButton>
-          <SButton
-            onClick={(e) => {
-              handleClose();
-              props.onSave();
-            }}
-            disabled={props.isError}
-          >
-            Lưu
-          </SButton>
-        </DialogActions>
-      </Dialog>
-    </div>
+          Hủy
+        </SButton>
+        <SButton
+          onClick={(e) => {
+            handleClose();
+            props.onSave();
+          }}
+          disabled={props.isError}
+        >
+          Lưu
+        </SButton>
+      </DialogActions>
+    </Dialog>
   );
 }

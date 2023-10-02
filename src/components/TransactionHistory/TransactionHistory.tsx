@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styledMUI(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#00524E",
+    background: "#00524E",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -99,12 +99,12 @@ export default function TransactionHistory() {
           <TableHead>
             <TableRow>
               <StyledTableCell>Thời gian tạo</StyledTableCell>
-              <StyledTableCell align="right">Tên giao dịch</StyledTableCell>
-              <StyledTableCell align="right">Số tiền giao dịch</StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCell align="left">Tên giao dịch</StyledTableCell>
+              <StyledTableCell align="left">Số tiền giao dịch</StyledTableCell>
+              <StyledTableCell align="left">
                 Trạng thái giao dịch
               </StyledTableCell>
-              <StyledTableCell align="right"></StyledTableCell>
+              <StyledTableCell align="center"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -115,16 +115,16 @@ export default function TransactionHistory() {
                     {transaction.createdAt}
                   </Moment>
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">
                   {transaction.name}
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">
                   {transaction.amount}
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">
                   {transaction.transactionState}
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="center">
                   <SButton
                     size="small"
                     color="secondary"

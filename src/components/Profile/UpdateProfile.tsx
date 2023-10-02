@@ -35,8 +35,8 @@ const UpdateProfile = ({
   refresh,
   setRefresh,
 }: UpdateProfileProps) => {
+  const [open, setOpen] = useState(false);
   const [profileFormData, setProfileFormData] = useState<User>({});
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,12 +79,15 @@ const UpdateProfile = ({
       <SButton color="secondary" onClick={(e) => navigate("/")}>
         Quay lại
       </SButton>
+      <SButton onClick={(e) => setOpen(true)} color="info">
+        Chỉnh sửa
+      </SButton>
       <SFormDialog
         title="Cập Nhật Hồ Sơ"
-        actionName="Cập nhật"
         isError={isErrorForm}
+        open={open}
+        setOpen={setOpen}
         onSave={updateProfile}
-        onCancel={() => {}}
       >
         <Container>
           <TextFieldContainer>
