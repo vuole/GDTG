@@ -1,21 +1,31 @@
-import TextField from "@mui/material/TextField";
 import styled from "styled-components";
-import SButton from "../../Button/SButton";
 import { AgreementChatProps } from "./AgreementChat";
 import TransactionService from "../../../services/TransactionService";
 import { useState } from "react";
 import STextField from "../../TextField/STextField";
-import theme from "../../../theme";
+import SendIcon from "@mui/icons-material/Send";
+import { Center } from "../AgreementContent";
 
 const Container = styled.div`
   padding: 0 10px 0 0;
   height: fit-content;
   display: flex;
   align-items: center;
-  gap: 10px;
 `;
 
-const InputBox = ({ data, currentUser }:  Omit<AgreementChatProps, "messagesEnd">) => {
+const SendButton = styled(Center)`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  &:hover {
+    background-color: #f0f2f5;
+  }
+`;
+
+const InputBox = ({
+  data,
+  currentUser,
+}: Omit<AgreementChatProps, "messagesEnd">) => {
   const [textMessage, setTextMessage] = useState<string>("");
 
   const handleSendMessage = () => {
@@ -48,16 +58,24 @@ const InputBox = ({ data, currentUser }:  Omit<AgreementChatProps, "messagesEnd"
         onKeyDown={(e) => onEnterPress(e)}
         onChange={(e) => setTextMessage(e.target.value)}
         sx={{
+          padding: "5px",
           "& .MuiOutlinedInput-root": {
             borderRadius: "20px",
-            backgroundColor: theme.palette.grey["100"],
+            backgroundColor: "#f0f2f5",
           },
-          padding: "5px 5px 2px 5px",
+          ".MuiOutlinedInput-notchedOutline": {
+            border: "none",
+          },
+          "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+            border: "none",
+          },
+          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+            { border: "none" },
         }}
       />
-      <SButton color="info" onClick={(e) => handleSendMessage()}>
-        Gửi
-      </SButton>
+      <SendButton onClick={(e) => handleSendMessage()}>
+        <SendIcon sx={{ color: "#0095C5", fontSize: "20px" }} />
+      </SendButton>
     </Container>
   );
 };
